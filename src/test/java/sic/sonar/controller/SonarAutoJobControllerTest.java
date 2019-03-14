@@ -1,5 +1,6 @@
 package sic.sonar.controller;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -30,9 +31,18 @@ public class SonarAutoJobControllerTest {
 	}
 
 	@Test
-	public void testSonarProcessNewOutFile() throws Exception {
-		sonarAutoJobController.sonarProcessNewOutFile(filePath, outputFilePath);
+	public void testGetFileNameOnly() throws Exception{
+		String orgin1 = "OnlyName.xlsx";
+		String origin2 = "OnlyName.my.xlsx";
 		
+		assertEquals("OnlyName",sonarAutoJobController.getFileNameOnly(orgin1));
+		assertEquals("OnlyName.my",sonarAutoJobController.getFileNameOnly(origin2));
+	}
+	
+	@Test
+	public void testSonarProcessNewOutFile() throws Exception {
+		String generatedOutputFileString = sonarAutoJobController.sonarProcessNewOutFile(filePath, outputFilePath);
+		assertTrue((new File(generatedOutputFileString)).exists());
 	}
 	
 	@Test

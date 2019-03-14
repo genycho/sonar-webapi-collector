@@ -15,7 +15,12 @@ public class SonarAutoJobController {
 	ExcelPOIService excelPOIService = new ExcelPOIService();
 	SonarWebAPIService sonarWebAPIService = new SonarWebAPIService();
 	
-	public void sonarProcessNewOutFile(String targetExcelFilePath, String outputFilePath) {
+	protected String getFileNameOnly(String fileNameWithExtension) {
+		String finalString = fileNameWithExtension.substring(0, fileNameWithExtension.lastIndexOf("."));
+		return finalString;
+	}
+	
+	public String sonarProcessNewOutFile(String targetExcelFilePath, String outputFilePath) {
 		File aFile = new File(targetExcelFilePath);
 		StringBuffer outputFilePathAndName = new StringBuffer();
 		outputFilePathAndName.append(outputFilePath);
@@ -24,10 +29,12 @@ public class SonarAutoJobController {
 			throw new SICRuntimeException("The input file does not exist! - " + aFile.getAbsolutePath());
 		}
 		outputFilePathAndName.append("/");
-		outputFilePathAndName.append(aFile.getName());
+		outputFilePathAndName.append(getFileNameOnly(aFile.getName()));
 		outputFilePathAndName.append(TestUtils.getUniqueString());
 		outputFilePathAndName.append(".xlsx");
 		sonarProcess(targetExcelFilePath,outputFilePathAndName.toString());
+		
+		return outputFilePathAndName.toString();
 	}
 
 	
